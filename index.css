@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  background-color: #dee2ea;
+}
+.container {
+  align-self: center;
+  width: 50%;
+  min-width: 400px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 45px;
+  color: #335c62;
+  font-weight: 700;
+}
+#add-button {
+  align-self: center;
+  width: 20%;
+  height: 40px;
+  margin-top: px;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  background-color: #59a2ad;
+  color: #0b0b0b;
+  cursor: pointer;
+}
+#add-button:hover {
+  opacity: 0.9;
+  background-color: #095e09c0;
+}
+#input-box {
+  padding-left: 10px;
+  width: 70%;
+  height: 40px;
+  border: 1px solid #dcdce6;
+}
+#listed-tasks {
+  font-size: 20px;
+  font-weight: 400;
+  font-style: inherit;
+  margin: 50px;
+}
+h3 {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 30px;
+  color: #9a4710;
+  font-weight: 300;
+}
