@@ -3,9 +3,8 @@ const textInput = document.getElementById("input-box");
 const orderedList = document.getElementById("listed-tasks");
 
 // Load tasks from localStorage on page load
-const tasks = JSON.parse(localStorage.getItem("listedTasks")) || [];
-tasks.forEach((task) => {
-  addTaskToList(task);
+document.addEventListener("DOMContentLoaded", function () {
+  loadTasks();
 });
 
 button.addEventListener("click", function () {
@@ -64,19 +63,34 @@ function toggleTaskCheck(taskItem) {
 }
 
 function updateTaskInLocalStorage(oldTask, newTask) {
-  const tasks = JSON.parse(localStorage.getItem("listedTasks")) || [];
+  const tasks = getTasksFromLocalStorage();
   const index = tasks.indexOf(oldTask);
   if (index > -1) {
     tasks[index] = newTask;
-    localStorage.setItem("listedTasks", JSON.stringify(tasks));
+    saveTasksToLocalStorage(tasks);
   }
 }
 
 function removeTaskFromLocalStorage(task) {
-  const tasks = JSON.parse(localStorage.getItem("listedTasks")) || [];
+  const tasks = getTasksFromLocalStorage();
   const index = tasks.indexOf(task);
   if (index > -1) {
     tasks.splice(index, 1);
-    localStorage.setItem("listedTasks", JSON.stringify(tasks));
+    saveTasksToLocalStorage(tasks);
   }
+}
+
+function loadTasks() {
+  const tasks = getTasksFromLocalStorage();
+  tasks.forEach((task) => {
+    addTaskToList(task);
+  });
+}
+
+function getTasksFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("listedTasks")) || [];
+}
+
+function saveTasksToLocalStorage(tasks) {
+  localStorage.setItem("listedTasks", JSON.stringify(tasks));
 }
