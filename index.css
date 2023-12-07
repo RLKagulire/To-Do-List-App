@@ -1,59 +1,77 @@
-* {
+body {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #2d79c6;
   margin: 0;
   padding: 0;
-  outline: 0;
-  box-sizing: border-box;
-}
-body {
   display: flex;
   justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  background-color: #dee2ea;
+  align-items: center;
+  min-height: 100vh;
 }
+
 .container {
-  align-self: center;
-  width: 50%;
-  min-width: 400px;
-}
-h1 {
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 45px;
-  color: #335c62;
-  font-weight: 700;
-}
-#add-button {
-  align-self: center;
-  width: 20%;
-  height: 40px;
-  margin-top: px;
-  border: 1px solid #dcdce6;
+  background-color: lightskyblue;
+  padding: 20px;
   border-radius: 8px;
-  background-color: #59a2ad;
-  color: #0b0b0b;
-  cursor: pointer;
-}
-#add-button:hover {
-  opacity: 0.9;
-  background-color: #095e09c0;
-}
-#input-box {
-  padding-left: 10px;
-  width: 70%;
-  height: 40px;
-  border: 1px solid #dcdce6;
-}
-#listed-tasks {
-  font-size: 20px;
-  font-weight: 400;
-  font-style: inherit;
-  margin: 50px;
-}
-h3 {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
   text-align: center;
-  margin-top: 30px;
-  font-size: 30px;
-  color: #9a4710;
-  font-weight: 300;
+}
+
+h1 {
+  color: #333;
+}
+
+.add-task {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  border: 3px solid #020a16;
+  border-radius: 5px;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #2667ce83;
+  color: #02101c;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #01111de1;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 20px;
+  background-color: #2667ce83;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: #cedce5;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #f51212;
+}
+
+.icons {
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 14px;
+  color: #050101;
 }
