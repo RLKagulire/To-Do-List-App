@@ -1,96 +1,80 @@
-const button = document.getElementById("add-button");
-const textInput = document.getElementById("input-box");
-const orderedList = document.getElementById("listed-tasks");
-
-// Load tasks from localStorage on page load
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', () => {
   loadTasks();
 });
 
-button.addEventListener("click", function () {
-  const inputValue = textInput.value;
-  if (inputValue === "") {
-    return;
-  } else {
-    addTaskToList(inputValue);
-    textInput.value = "";
+const taskInput = document.getElementById('taskInput');
+taskInput.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+      addTask();
   }
 });
 
-function addTaskToList(task) {
-  const listedTasks = document.createElement("li");
-  orderedList.appendChild(listedTasks);
-  listedTasks.innerHTML = `<span class="textInput">${task}</span>
-      <span>
-          <i class="fas fa-edit"></i>
-          <i class="fas fa-trash"></i>
-          <i class="fas fa-check-circle"></i>
-      </span>`;
+function addTask() {
+  const taskList = document.getElementById('taskList');
 
-  // Add click event to delete icon
-  listedTasks.querySelector(".fa-trash").addEventListener("click", function () {
-    orderedList.removeChild(listedTasks);
-    removeTaskFromLocalStorage(task);
-  });
-
-  // Add click event to edit button
-  listedTasks.querySelector(".fa-edit").addEventListener("click", function () {
-    const editedText = prompt("Edit this task:", task);
-    if (editedText !== null && editedText !== "") {
-      const textSpan = listedTasks.querySelector(".textInput");
-      textSpan.innerText = editedText;
-      updateTaskInLocalStorage(task, editedText);
-    }
-  });
-
-  // Add an event for the checkbox
-  const checkboxIcon = listedTasks.querySelector(".fa-check-circle");
-  checkboxIcon.addEventListener("click", function () {
-    toggleTaskCheck(listedTasks);
-  });
-}
-
-function toggleTaskCheck(taskItem) {
-  taskItem.classList.toggle("checked");
-  const isChecked = taskItem.classList.contains("checked");
-  const textSpan = taskItem.querySelector(".textInput");
-
-  if (isChecked) {
-    textSpan.style.textDecoration = "line-through";
-  } else {
-    textSpan.style.textDecoration = "none";
+  if (taskInput.value.trim() !== '') {
+      const task = taskInput.value.trim();
+      const li = document.createElement('li');
+      li.innerHTML = `
+          <span>${task}</span>
+          <span class="icons" onclick="editTask(this)"><i class="fas fa-edit"></i></span>
+          <span class="icons" onclick="completeTask(this)"><i class="fas fa-check"></i></span>
+          <span class="icons" onclick="deleteTask(this)"><i class="fas fa-trash-alt"></i></span>
+      `;
+      taskList.appendChild(li);
+      saveTaskToLocalStorage(taskList);
+      taskInput.value = '';
   }
 }
 
-function updateTaskInLocalStorage(oldTask, newTask) {
-  const tasks = getTasksFromLocalStorage();
-  const index = tasks.indexOf(oldTask);
-  if (index > -1) {
-    tasks[index] = newTask;
-    saveTasksToLocalStorage(tasks);
+function editTask(element) {
+  const li = element.parentElement;
+  const span = li.querySelector('span');
+  
+    const editedTask = prompt('Edit Task:', span.textContent);
+
+  if (editedTask !== null) {
+      span.textContent = editedTask;
+      saveTaskToLocalStorage(document.getElementById('taskList'));
   }
 }
 
-function removeTaskFromLocalStorage(task) {
-  const tasks = getTasksFromLocalStorage();
-  const index = tasks.indexOf(task);
-  if (index > -1) {
-    tasks.splice(index, 1);
-    saveTasksToLocalStorage(tasks);
-  }
+function completeTask(element) {
+  const li = element.parentElement;
+  li.classList.toggle('completed');
+  saveTaskToLocalStorage(document.getElementById('taskList'));
+}
+
+function deleteTask(element) {
+  const li = element.parentElement;
+  li.remove();
+  saveTaskToLocalStorage(document.getElementById('taskList'));
+}
+
+function saveTaskToLocalStorage(taskList) {
+  const tasks = [];
+  taskList.childNodes.forEach((li) => {
+      const taskText = li.querySelector('span').textContent;
+      tasks.push({ text: taskText, completed: li.classList.contains('completed') });
+  });
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function loadTasks() {
-  const tasks = getTasksFromLocalStorage();
+  const taskList = document.getElementById('taskList');
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
   tasks.forEach((task) => {
-    addTaskToList(task);
+      const li = document.createElement('li');
+      if (task.completed) {
+          li.classList.add('completed');
+      }
+      li.innerHTML = `
+          <span>${task.text}</span>
+          <span class="icons" onclick="editTask(this)"><i class="fas fa-edit"></i></span>
+          <span class="icons" onclick="completeTask(this)"><i class="fas fa-check"></i></span>
+          <span class="icons" onclick="deleteTask(this)"><i class="fas fa-trash-alt"></i></span>
+      `;
+      taskList.appendChild(li);
   });
-}
-
-function getTasksFromLocalStorage() {
-  return JSON.parse(localStorage.getItem("listedTasks")) || [];
-}
-
-function saveTasksToLocalStorage(tasks) {
-  localStorage.setItem("listedTasks", JSON.stringify(tasks));
 }
